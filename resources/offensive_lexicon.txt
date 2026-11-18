@@ -1,0 +1,20 @@
+# Small manually specified English rule baseline. Not mined from validation/test data.
+# Exact or one-edit matches are allowed for words of at least five characters.
+asshole
+bastard
+bitch
+bullshit
+crap
+damn
+dick
+dumbass
+fuck
+fucker
+fucking
+idiot
+jerk
+moron
+piss
+shit
+stupid
+

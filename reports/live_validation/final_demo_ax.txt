@@ -1,0 +1,125 @@
+Browser tab: 4, Title: "English Chat Moderation", URL: "http://127.0.0.1:7860/".
+0 AXWebArea English Chat Moderation, URL: 127.0.0.1:7860/
+	1 container
+		13 container component-0
+			14 container component-1
+				15 container
+					16 heading English Chat Moderation, Value: 1
+						17 text English Chat Moderation
+					18 text Type a message to check it before it appears in the chat.
+			19 container component-3
+				20 container component-4
+					73 container component-5
+						74 container
+							75 text Moderated conversation
+							326 button Sohbeti Temizle
+								327 image icon
+							78 container chatbot conversation
+								328 container
+									329 container user's message: Thanks for the match. Let's play again tomorrow.
+										330 text Thanks for the match. Let's play again tomorrow.
+									331 container bot's message: CLEAN · confidence 99.9% · 4.1 ms
+										332 text CLEAN · confidence 99.9% · 4.1 ms
+									333 container user's message: [Message hidden: offensive language]
+										334 text [Message hidden: offensive language]
+									335 container bot's message: OFFENSIVE · confidence 99.9% · 3.0 ms
+										336 text OFFENSIVE · confidence 99.9% · 3.0 ms
+									338 container user's message: Thats what yopur mom said last night oooh
+										339 text Thats what yopur mom said last night oooh
+									340 container bot's message: CLEAN · confidence 97.1% · 3.3 ms
+										341 text CLEAN · confidence 97.1% · 3.3 ms
+					84 container component-6
+						85 container
+							86 text Your message
+							87 text entry area (settable) Your message
+					27 button Send message, ID: component-7
+					28 container component-8
+						29 text Examples
+						30 button Thanks for helping our team!
+							31 text Thanks for helping our team!
+						32 button You are a complete idiot.
+							33 text You are a complete idiot.
+						34 button That was a stupid mistake, but we can fix it.
+							35 text That was a stupid mistake, but we can fix it.
+				36 container component-10
+					37 container component-11
+						38 text Active model
+						323 container
+							324 list Description: Active model, Value: DistilBERT INT8 (ONNX CPU)
+							325 image
+					42 container component-12
+						43 text Confidence is the model's score, not a guarantee of correctness. Only the current message is classified.
+					44 container component-13
+						45 container
+							46 text Response time log
+							47 toolbar Table actions
+							48 table
+								49 button Veriyi veri çerçevesine aktarmak için CSV veya TSV dosyalarını buraya bırakın
+									50 table Response time log
+										51 text Response time log
+										52 row
+											53 cell
+												54 button Message
+													55 button Message
+											56 cell
+												57 button Model
+													58 button Model
+											59 cell
+												60 button Label
+													61 button Label
+											62 cell
+												63 button Confidence
+													64 button Confidence
+											65 cell
+												66 button Latency ms
+													67 button Latency ms
+										337 container
+											342 row
+												343 cell
+													344 button 1
+												345 cell
+													346 button DistilBERT INT8 (ONNX CPU)
+												347 cell
+													348 button clean
+												349 cell
+													350 button 0.9985
+												351 cell
+													352 button 4.14
+											353 row
+												354 cell
+													355 button 2
+												356 cell
+													357 button DistilBERT INT8 (ONNX CPU)
+												358 cell
+													359 button offensive
+												360 cell
+													361 button 0.999
+												362 cell
+													363 button 3.02
+											364 row
+												365 cell
+													366 button 3
+												367 cell
+													368 button DistilBERT INT8 (ONNX CPU)
+												369 cell
+													370 button clean
+												371 cell
+													372 button 0.9713
+												373 cell
+													374 button 3.27
+					68 button Clear conversation, ID: component-14
+			69 container component-16
+				70 button Measured model comparison ▼
+					71 text Measured model comparison
+					72 text ▼
+		4 button API üzerinden kullan Logo
+			5 text API üzerinden kullan
+			6 image Logo
+		7 text ·
+		8 link Description: Gradio ile oluşturulmuştur Logo, Value: gradio.app/
+		9 text ·
+		10 button Ayarlar Ayarlar
+			11 text Ayarlar
+			12 image Ayarlar
+
+The focused UI element is 27 button Send message, ID: component-7

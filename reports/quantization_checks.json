@@ -1,0 +1,30 @@
+{
+  "validation_samples": 64,
+  "fp32_onnx_max_score_error": 7.152557373046875e-07,
+  "int8_mean_score_change": 0.007947289384901524,
+  "threshold_policy": "The FP32 validation threshold is reused unchanged for both ONNX models.",
+  "int8_is_partial_quantization": true,
+  "integer_operator_counts": {
+    "Equal": 1,
+    "Gather": 16,
+    "Shape": 13,
+    "Unsqueeze": 13,
+    "Slice": 1,
+    "Add": 57,
+    "LayerNormalization": 13,
+    "DynamicQuantizeLinear": 26,
+    "Mul": 88,
+    "MatMulInteger": 38,
+    "Cast": 38,
+    "Concat": 18,
+    "Reshape": 30,
+    "Transpose": 24,
+    "Div": 12,
+    "MatMul": 12,
+    "Expand": 6,
+    "Where": 6,
+    "Softmax": 6,
+    "Erf": 6,
+    "Relu": 1
+  }
+}

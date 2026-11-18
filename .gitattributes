@@ -1,0 +1,5 @@
+# Frozen implementation hashes require identical source bytes after checkout.
+* text=auto eol=lf
+*.jpg binary
+*.png binary
+*.zip binary

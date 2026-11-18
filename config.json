@@ -1,0 +1,27 @@
+{
+  "seed": 42,
+  "dataset_id": "thesofakillers/jigsaw-toxic-comment-classification-challenge",
+  "dataset_revision": "main",
+  "train_size": 20000,
+  "validation_size": 2000,
+  "test_size": 3000,
+  "max_input_chars": 4000,
+  "max_length": 128,
+  "tfidf_max_features": 40000,
+  "word2vec_dim": 100,
+  "word2vec_epochs": 10,
+  "neural_hidden_dim": 64,
+  "neural_epochs": 20,
+  "neural_batch_size": 128,
+  "neural_learning_rate": 0.05,
+  "transformer_id": "distilbert/distilbert-base-uncased",
+  "transformer_revision": "main",
+  "transformer_epochs": 2,
+  "transformer_batch_size": 16,
+  "transformer_learning_rate": 0.00002,
+  "cpu_threads": 2,
+  "latency_runs": 200,
+  "latency_warmup": 10,
+  "latency_budget_ms": 150.0
+}
+

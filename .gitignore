@@ -1,0 +1,36 @@
+.venv/
+.runtime/
+.cache/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.idea/
+data/
+artifacts/
+checkpoints/
+dist/
+.env
+.env.*
+*.log
+*.safetensors
+*.onnx
+*.pt
+*.pkl
+*.joblib
+*.zip
+.ipynb_checkpoints/
+
+# Local account/permission screenshots and machine-specific diagnostics.
+colab-drive-permission.jpg
+reports/live_validation/*
+!reports/live_validation/README.md
+!reports/live_validation/selected_failure.json
+!reports/live_validation/final_demo_ax.txt
+!reports/live_validation/int8_live_demo.jpg
+!reports/live_validation/int8_failure_example.jpg
+!reports/live_validation/verified_int8_app.jpg
+
+# Raw comment examples remain in the trained run bundle.
+reports/failure_examples.json
+

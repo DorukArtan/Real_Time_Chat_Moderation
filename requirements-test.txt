@@ -1,0 +1,7 @@
+numpy==2.2.6
+pandas==2.2.3
+scikit-learn==1.6.1
+rapidfuzz==3.12.2
+pytest==8.3.5
+pip>=22.3
+

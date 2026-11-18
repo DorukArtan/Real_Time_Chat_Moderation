@@ -1,0 +1,20 @@
+{
+  "test_id": "b79f828bb11b371f",
+  "text": "Thats what yopur mom said last night oooh",
+  "dataset_label": "offensive",
+  "frozen_colab_prediction": "clean",
+  "frozen_colab_offensive_score": 0.018513653,
+  "live_windows_cpu_prediction": "clean",
+  "live_confidence_for_predicted_class": 0.9713,
+  "live_displayed_confidence": "97.1%",
+  "live_active_model": "DistilBERT INT8 (ONNX CPU)",
+  "error_type": "false negative relative to retained dataset annotation",
+  "interpretation": "Indirect innuendo, spelling noise and missing context are possible difficulties; causal explanation not established.",
+  "score_comparison_note": "Frozen batched Colab evaluation and local batch-1 UI are distinct runs; dynamic quantization batching and environment may change scores. Original metrics are preserved.",
+  "evidence": [
+    "int8_failure_example.jpg",
+    "verified_int8_app.jpg",
+    "final_demo_ax.txt",
+    "../test_predictions.csv"
+  ]
+}

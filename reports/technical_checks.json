@@ -1,0 +1,15 @@
+{
+  "frozen_data_and_provenance": true,
+  "six_measured_models": true,
+  "same_heldout_test": true,
+  "at_least_100_cpu_latency_runs": true,
+  "quantization_graph_and_export_parity": true,
+  "int8_within_declared_latency_budget": true,
+  "manual_checks_still_required": [
+    "Live UI with two new inputs including a difficult case",
+    "8-12-slide PDF with technique map, matching architecture and AI usage",
+    "Narrated video no longer than 2 minutes",
+    "Repository, weights and video links accessible to the instructor",
+    "Fresh-environment setup from README"
+  ]
+}
