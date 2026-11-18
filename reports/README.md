@@ -10,6 +10,6 @@ The numeric reports here come from the project's completed Colab run. They are p
 - `technical_checks.json`: checks performed when the original Colab run was exported. Its pending manual list is historical.
 - `live_validation/`: selected later browser evidence and an actual false-negative example.
 
-Model weights, frozen split texts, the full raw failure-example list and the run bundle are not committed. They remain in the original `moderation_run_bundle.zip`; an instructor-accessible model download link is still pending. Local machine/account diagnostics and the Drive authorization screenshot are also excluded.
+Model weights, frozen split texts, the full raw failure-example list and the run bundle are not committed. They are available in `moderation_run_bundle.zip`, linked in the main [README download and restore instructions](../README.md#run-the-application-after-cloud-training). Local machine/account diagnostics and the Drive authorization screenshot are also excluded.
 
 The dataset source and binary-label adaptation are documented in the main README. The single comment quoted in the selected failure is an example from that attributed dataset, not a message authored by the student.

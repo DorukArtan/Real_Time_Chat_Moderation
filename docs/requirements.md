@@ -10,7 +10,7 @@ This is a traceability plan. An implementation location is not proof that an une
 | R4 Results table | Macro-F1, complete artifact MB, mean latency >=100 calls, hardware | Actual `reports/results.csv` and `evaluation.json`: six models, 200 CPU calls each, hardware recorded |
 | R5 Quantized Transformer in app | INT8 is selected by default; explicit CPU ONNX inference; missing weights fail | Real trained INT8 default, masking and new-input inference verified in browser; `reports/live_validation/README.md` and screenshots |
 | R6 Matching architecture | Names, precision, preprocessing, postprocessing, hosting and user interface | `docs/architecture.md` matches CPU app/model switching; final slide pending |
-| R7 Repository | Accessible GitHub/GitLab, README, requirements, single app command, weights linked externally | Repository prepared: `https://github.com/DorukArtan/Real_Time_Chat_Moderation`; external weight link and fresh setup check pending |
+| R7 Repository | Accessible GitHub/GitLab, README, requirements, single app command, weights linked externally | Public repository: `https://github.com/DorukArtan/Real_Time_Chat_Moderation`; README links the Drive model bundle with checksum and restore commands; fresh dependency setup check pending |
 | R8 AI usage | Accurate tool-and-purpose slide | `AI_USAGE.md`; final slide pending |
 
 ## Use Case 4 component checklist
@@ -43,7 +43,7 @@ Missing technique area/map/model; unequal held-out evaluation; incomplete result
 - [ ] Prepare 8-12 slides following Introduction / Development / Conclusion.
 - [ ] Include the technique map, matching architecture, own measured results and AI usage.
 - [ ] Record a narrated video of at most 2:00 with live app, architecture and results.
-- [ ] Publish/share the repository and weights; add tested setup and artifact links.
+- [x] Publish/share the repository and weights; add setup instructions and artifact links.
 - [ ] Test setup in a fresh environment without training locally.
 - [ ] Check video, repository and weight links with instructor-equivalent access.
 

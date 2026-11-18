@@ -87,7 +87,15 @@ Latency uses batch size 1, the same seeded message order for every model, 10 unm
 
 ## Run the application after cloud training
 
-**Trained model download: an instructor-accessible link is still pending.** A new clone needs the separately exported `moderation_run_bundle.zip` before the application can run. The current development computer already has it restored. Model weights and dataset files are deliberately excluded from Git.
+**Download trained models:** [moderation_run_bundle.zip — Google Drive](https://drive.google.com/file/d/1sybY7Hv8NzawH67hxUHRxOdOxfRfbzfr/view?usp=drive_link) (**710.6 MB**, approximately 711 MB).
+
+This exported Colab bundle contains all six model artifacts, required tokenizer/vocabulary files, frozen data splits and their manifest, and the original evaluation reports. A new clone needs this bundle before the application can run. Download the ZIP intact and restore it with the command below; the current development computer already has it restored. Model weights and dataset files are deliberately excluded from Git, as required by the homework.
+
+Expected SHA-256 for the ZIP:
+
+```text
+80c7427b94b8a74e72a16fb78765f153d813b4fb054b58f2917f30e62f020bb7
+```
 
 The easiest first demo is the final app cell in Colab, embedded in the notebook. No public tunnel is opened automatically. For a local CPU demonstration after training:
 
@@ -123,11 +131,14 @@ py -3.12 -m venv .venv
 
 This pins the CPU PyTorch version used by the local demo; Colab keeps its separate CUDA-enabled PyTorch. No activation is required below because every command names the environment's interpreter explicitly. Select that same `.venv/Scripts/python.exe` in the IDE.
 
-3. Download `moderation_run_bundle.zip` from your run folder in Drive. Preserve the exact source and `config.json` used to produce it:
+3. Download [moderation_run_bundle.zip from Google Drive](https://drive.google.com/file/d/1sybY7Hv8NzawH67hxUHRxOdOxfRfbzfr/view?usp=drive_link) and save it in your **Downloads** folder with that filename. Use the source and `config.json` from this repository, which match the saved experiment. In PowerShell, check the ZIP hash against the value above, then restore:
 
 ```powershell
-.\.venv\Scripts\python.exe -m moderation restore-bundle "PATH_TO_DOWNLOADED_ZIP"
+Get-FileHash "$env:USERPROFILE\Downloads\moderation_run_bundle.zip" -Algorithm SHA256
+.\.venv\Scripts\python.exe -m moderation restore-bundle "$env:USERPROFILE\Downloads\moderation_run_bundle.zip"
 ```
+
+If you save it elsewhere, replace the path in these commands. The restore command checks each archived file's checksum and the experiment configuration before the application uses the artifacts. Restoring does not train models.
 
 4. Single run command:
 
@@ -141,19 +152,26 @@ Open `http://127.0.0.1:7860`. The application accepts new messages, shows labels
 
 Missing model files produce an explicit setup error; there is no fake prediction fallback. Only restore artifact bundles you produced and trust, because the sklearn pipeline uses Python serialization.
 
-For Linux/macOS, use an independently installed Python 3.12 with `python3.12 -m venv .venv`, then replace `.\.venv\Scripts\python.exe` in the commands above with `.venv/bin/python`.
+For Linux/macOS, use an independently installed Python 3.12 with `python3.12 -m venv .venv`, then replace `.\.venv\Scripts\python.exe` in the installation commands above with `.venv/bin/python`. Use your actual ZIP download path for restoration:
+
+```sh
+.venv/bin/python -m moderation restore-bundle /path/to/moderation_run_bundle.zip
+.venv/bin/python app.py
+```
+
+For the optional SHA-256 check, use `sha256sum /path/to/moderation_run_bundle.zip` on Linux or `shasum -a 256 /path/to/moderation_run_bundle.zip` on macOS.
 
 ## Repository and submission
 
 Repository: [DorukArtan/Real_Time_Chat_Moderation](https://github.com/DorukArtan/Real_Time_Chat_Moderation).
 
-Keep weights, raw/processed data, virtual environments and bundles out of Git. The `.gitignore` covers them. An instructor-accessible weight-bundle link from Drive or Hugging Face is still pending; the restore commands are documented above. Source code alone is not a complete submission.
+Keep weights, raw/processed data, virtual environments and bundles out of Git. The `.gitignore` covers them. The trained bundle is available through the Google Drive link above, with its checksum and restore commands. The source repository and this external bundle together provide the saved experiment and application artifacts.
 
 See `docs/requirements.md` for R1-R8 and grading gates, `docs/architecture.md` for the matching data flow, `docs/presentation_plan.md` for the 12-slide plan, and `AI_USAGE.md` for the current tool-use record.
 
 Cloud training, exported metrics, artifact restoration and local CPU browser verification are complete. See [the demo guide](docs/demo_guide.md) for the tested inputs, actual failure and narration draft. Click **Send message** to submit: Enter inserted a newline in the tested multiline textbox despite its placeholder.
 
-Pending deliverables: the final 8-12-slide PDF, the student's narrated <=2-minute video, accessible weights/video links, and a fresh-environment setup check. Successful local inference does not complete these submission gates.
+Pending deliverables: the final 8-12-slide PDF, the student's narrated <=2-minute video and accessible video link, and a fresh-environment setup check. Successful local inference does not complete these submission gates.
 
 ## Code checks
 
