@@ -58,7 +58,7 @@ Single run command on Windows:
 .\run.cmd
 ```
 
-Open <http://127.0.0.1:7860>. The default model is **DistilBERT INT8 (ONNX CPU)**. Type a message and click **Send message**. The application shows clean/offensive labels and confidence, masks flagged messages, provides four model choices, and logs response time. Enter may insert a newline in the message box.
+Open <http://127.0.0.1:7860>. The default model is **DistilBERT INT8 (ONNX CPU)**. Type a message and press **Enter** or click **Send message**. Use **Shift+Enter** for a new line. The application shows clean/offensive labels and confidence, masks flagged messages, provides four model choices, and logs response time.
 
 The launcher selects this project's `.venv\Scripts\python.exe` and working directory explicitly. To use another port when 7860 is occupied:
 
@@ -147,7 +147,7 @@ Keep weights, raw/processed data, virtual environments and bundles out of Git. T
 
 See `docs/requirements.md` for R1-R8 and grading gates, `docs/architecture.md` for the matching data flow, `docs/presentation_plan.md` for the 12-slide plan, and `AI_USAGE.md` for the current tool-use record.
 
-Cloud training, exported metrics, artifact restoration and local CPU browser verification are complete. See [the demo guide](docs/demo_guide.md) for the tested inputs, actual failure and narration draft. Click **Send message** to submit: Enter inserted a newline in the tested multiline textbox despite its placeholder.
+Cloud training, exported metrics, artifact restoration and local CPU browser verification are complete. See [the demo guide](docs/demo_guide.md) for the tested inputs, actual failure and narration draft. Press **Enter** or click **Send message** to submit; **Shift+Enter** inserts a new line.
 
 The 12-slide PDF has been prepared locally. The student's narrated <=2-minute video, its accessible link and a fresh-environment setup check remain pending. Add the video link to the PDF cover before submission.
 

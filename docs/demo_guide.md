@@ -4,7 +4,7 @@ Verified on 2026-11-17 with the actual restored Colab artifacts on Windows CPU. 
 
 ## Open and rehearse
 
-From the project folder, run `.\.venv\Scripts\python.exe app.py` and open <http://127.0.0.1:7860>. If the server is already running, use its existing tab. **DistilBERT INT8 (ONNX CPU)** is the default. Click **Send message** after typing. In the tested multiline textbox, Enter inserted a newline despite the placeholder.
+From the project folder, run `.\.venv\Scripts\python.exe app.py` and open <http://127.0.0.1:7860>. If the server is already running, use its existing tab. **DistilBERT INT8 (ONNX CPU)** is the default. Press **Enter** or click **Send message** after typing. Use **Shift+Enter** to insert a new line.
 
 Use **Clear conversation** before recording. Type the first two examples live, rather than only clicking the built-in examples or showing a screenshot. Show the selected model and the response log. Four model choices were tested successfully: TF-IDF, own Word2Vec + FFN, DistilBERT FP32 and INT8.
 

@@ -11,6 +11,14 @@ def main():
     parser.add_argument("--port", type=int, default=7860)
     args = parser.parse_args()
     app = build_moderation_app()
+    from gradio import Textbox
+
+    message = next(
+        block for block in app.blocks.values()
+        if isinstance(block, Textbox) and block.label == "Your message"
+    )
+    message.lines = 1
+    message.placeholder = "Type a message. Enter to send; Shift+Enter for a new line."
     # Keep settings and API controls available without the Gradio branding link.
     app.css = (app.css or "") + """
     footer .built-with,
