@@ -58,7 +58,7 @@ Single run command on Windows:
 .\run.cmd
 ```
 
-Open <http://127.0.0.1:7860>. The default model is **DistilBERT INT8 (ONNX CPU)**. Type a message and press **Enter** or click **Send message**. Use **Shift+Enter** for a new line. The application shows clean/offensive labels and confidence, masks flagged messages, provides four model choices, and logs response time.
+Open <http://127.0.0.1:7860>. The default model is **DistilBERT INT8 (ONNX CPU)**. Type a message and press **Enter** or click **Send message**. Use **Shift+Enter** for a new line. Empty or whitespace-only input is ignored. The application shows clean/offensive labels and confidence, masks flagged messages, provides four model choices, and logs response time.
 
 The launcher selects this project's `.venv\Scripts\python.exe` and working directory explicitly. To use another port when 7860 is occupied:
 
