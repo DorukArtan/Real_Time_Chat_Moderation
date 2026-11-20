@@ -1,43 +1,97 @@
 # English Chat Moderation
 
-SWE015 individual homework, Use Case 4. This project compares an English chat moderation task across TF-IDF, a feedforward network using our own Word2Vec, a fine-tuned DistilBERT, and its INT8 version. A separate edit-distance rule baseline and an FP32 ONNX control are also evaluated.
+SWE015 individual homework, Use Case 4. This project compares English chat moderation across TF-IDF, a feedforward network using our own Word2Vec, a fine-tuned DistilBERT, and its INT8 version. A separate edit-distance rule baseline and an FP32 ONNX control are also evaluated.
 
-All model fitting and experiment benchmarking run in **Google Colab**. Local training is deliberately blocked. Opening the application never starts training.
+**Start with the trained model bundle below to run the application on CPU.** Retraining is optional; see [the Colab instructions at the end](#optional-retrain-in-google-colab).
 
-## Start in Colab
+## Run with trained models
 
-1. Open [Google Colab](https://colab.research.google.com/) and choose **File > Upload notebook**.
-2. Upload `notebooks/01_colab_training.ipynb`. It contains a source archive, so a published GitHub repository is not needed to start.
-3. Choose **Runtime > Change runtime type > T4 GPU**, or another available GPU.
-4. Run the numbered cells in order. Authorize your own Google Drive when the mount cell requests access.
-5. Models, frozen splits, training logs and measured reports are stored under `MyDrive/SWE015_Moderation/runs/run_001/`.
-6. Run the interactive Gradio application cell to test new messages inside Colab.
+### 1. Get the source and download the models
 
-The notebook uses an isolated virtual environment and reuses Colab's CUDA PyTorch when compatible. GPU training is used for the Transformer; the Word2Vec and small network stages use the Colab CPU. **All inference benchmarks explicitly use CPU**, including when the Colab runtime has a GPU.
+Clone the repository, then enter its folder. If you already have the project, open your existing project folder and skip these two commands.
 
-The environment is created with `venv --without-pip --system-site-packages`, then the notebook's pip uses `--python` to install into that environment. This avoids depending on `ensurepip`, which some hosted Python installations omit. Creation is repeated safely on rerun to repair a partially created environment; existing packages and Drive outputs are not deleted. Setup failures include their underlying stdout/stderr in the error message. See [pip's interpreter-management documentation](https://pip.pypa.io/en/stable/topics/python-option/).
-
-Completed model stages are skipped on rerun. An interrupted stage restarts from its beginning; this is not an optimizer-state resume system. Best epoch weights and per-epoch logs are saved to Drive, but do not reuse an incomplete stage as final evidence. If source or configuration changes, choose a new `RUN_NAME` to avoid mixing experiments.
-
-Colab GPU availability and session duration are not guaranteed. No paid resource is purchased by this project.
-
-## Experiment stages
-
-The notebook executes these same repository commands:
-
-```text
-python -m moderation doctor
-python -m moderation prepare-data
-python -m moderation train-baselines
-python -m moderation train-neural
-python -m moderation train-transformer
-python -m moderation quantize
-python -m moderation evaluate
-python -m moderation verify
-python -m moderation bundle
+```powershell
+git clone https://github.com/DorukArtan/Real_Time_Chat_Moderation.git
+cd Real_Time_Chat_Moderation
 ```
 
-Training commands are restricted to Colab. Data preparation, status inspection and inference do not train models.
+**Download:** [moderation_run_bundle.zip - Google Drive](https://drive.google.com/file/d/1sybY7Hv8NzawH67hxUHRxOdOxfRfbzfr/view?usp=drive_link) (**710.6 MB**, approximately 711 MB). Save the ZIP intact in your **Downloads** folder with that filename.
+
+The bundle contains all six model artifacts, required tokenizer/vocabulary files, frozen data splits and their manifest, and the original evaluation reports. A new clone needs this bundle before the application can run. Model weights and dataset files are excluded from Git. The current development checkout already has the bundle restored.
+
+Expected SHA-256:
+
+```text
+80c7427b94b8a74e72a16fb78765f153d813b4fb054b58f2917f30e62f020bb7
+```
+
+### 2. Set up the Python environment
+
+For a new installation, install **64-bit Python 3.12**, then run the following commands from the project folder in PowerShell. If this checkout already has a working `.venv`, use that environment and continue to step 3.
+
+```powershell
+py -3.12 --version
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cpu
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pip check
+```
+
+The version check must succeed before creating the environment. Python 3.12 and CPU PyTorch 2.6.0 match the verified local demo. These commands name the project interpreter directly, so environment activation is unnecessary. Use the same `.venv` in your IDE and terminal.
+
+### 3. Verify and restore the model bundle
+
+Compare the hash printed by the first command with the SHA-256 above, then restore:
+
+```powershell
+Get-FileHash "$env:USERPROFILE\Downloads\moderation_run_bundle.zip" -Algorithm SHA256
+.\.venv\Scripts\python.exe -m moderation restore-bundle "$env:USERPROFILE\Downloads\moderation_run_bundle.zip"
+```
+
+If you saved the ZIP elsewhere, replace its path in both commands. The restore command checks the archived file hashes and experiment configuration. It restores the saved artifacts without training. Skip this step if this checkout already has the trained artifacts restored.
+
+### 4. Start the application
+
+Single run command on Windows:
+
+```powershell
+.\run.cmd
+```
+
+Open <http://127.0.0.1:7860>. The default model is **DistilBERT INT8 (ONNX CPU)**. Type a message and click **Send message**. The application shows clean/offensive labels and confidence, masks flagged messages, provides four model choices, and logs response time. Enter may insert a newline in the message box.
+
+The launcher selects this project's `.venv\Scripts\python.exe` and working directory explicitly. To use another port when 7860 is occupied:
+
+```powershell
+.\run.cmd --port 7861
+```
+
+Then open <http://127.0.0.1:7861>. The equivalent direct launch is `.\.venv\Scripts\python.exe app.py`.
+
+Confidence scores are uncalibrated model scores. Each model classifies only the current message. The UI rejects inputs longer than 4,000 characters, and the Transformer uses at most 128 tokens. Missing model files produce an explicit setup error.
+
+### Use the same environment in an IDE or Codex
+
+- **VS Code:** open the project folder and select `.venv\Scripts\python.exe` with **Python: Select Interpreter**. The checked-in `.vscode` files provide the environment default and an **English Chat Moderation** launch configuration for F5 / Run Without Debugging. Install the recommended Python and Python Debugger extensions if absent. A previously selected workspace interpreter may need to be changed explicitly.
+- **Antigravity, PyCharm or another IDE:** select the existing interpreter `<project>\.venv\Scripts\python.exe`, set `app.py` as the script and the project folder as the working directory. You can also run `.\run.cmd` from the IDE's PowerShell terminal.
+- **Codex:** use the same `.\run.cmd` launcher or `.\.venv\Scripts\python.exe app.py`.
+
+The current development `.venv` uses Codex's bundled Python 3.12.14 and works from both the IDE and Codex while that base installation remains available. A new checkout can use an independently installed Python 3.12 as described above. Virtual environments depend on their base Python installation; recreate `.venv` on another computer rather than copying it. A fresh-environment setup check is still pending.
+
+VS Code configuration follows its [debugger documentation](https://code.visualstudio.com/docs/python/debugging) and [interpreter setting documentation](https://code.visualstudio.com/docs/python/settings-reference). See also the [Python virtual environment documentation](https://docs.python.org/3.12/library/venv.html).
+
+### Linux/macOS paths
+
+Use Python 3.12 to create an environment with `python3.12 -m venv .venv`. Install the project dependencies and an appropriate CPU PyTorch build for your platform. The verified local demo uses Windows; other platforms have not been independently checked.
+
+Replace `.\.venv\Scripts\python.exe` with `.venv/bin/python`, and use your actual ZIP path:
+
+```sh
+.venv/bin/python -m moderation restore-bundle /path/to/moderation_run_bundle.zip
+.venv/bin/python app.py
+```
+
+For the SHA-256 check, use `sha256sum /path/to/moderation_run_bundle.zip` on Linux or `shasum -a 256 /path/to/moderation_run_bundle.zip` on macOS.
 
 ## Dataset and task definition
 
@@ -85,82 +139,6 @@ Every row reports macro-F1, accuracy, offensive precision/recall, model size in 
 
 Latency uses batch size 1, the same seeded message order for every model, 10 unmeasured warmups and 200 measured calls. It includes normalization, tokenization/vectorization, forward pass and score postprocessing. It excludes initial model loading, network requests and browser rendering. The declared budget is **mean CPU latency <=150 ms per message with two threads and maximum Transformer length 128**. The saved INT8 result of 14.96 ms meets it. If a later run misses the target, the verification command fails; disclose any changed experiment configuration.
 
-## Run the application after cloud training
-
-**Download trained models:** [moderation_run_bundle.zip — Google Drive](https://drive.google.com/file/d/1sybY7Hv8NzawH67hxUHRxOdOxfRfbzfr/view?usp=drive_link) (**710.6 MB**, approximately 711 MB).
-
-This exported Colab bundle contains all six model artifacts, required tokenizer/vocabulary files, frozen data splits and their manifest, and the original evaluation reports. A new clone needs this bundle before the application can run. Download the ZIP intact and restore it with the command below; the current development computer already has it restored. Model weights and dataset files are deliberately excluded from Git, as required by the homework.
-
-Expected SHA-256 for the ZIP:
-
-```text
-80c7427b94b8a74e72a16fb78765f153d813b4fb054b58f2917f30e62f020bb7
-```
-
-The easiest first demo is the final app cell in Colab, embedded in the notebook. No public tunnel is opened automatically. For a local CPU demonstration after training:
-
-### Existing project: the same environment in an IDE and Codex
-
-The current `.venv` already has the packages and the trained artifacts have been restored. Both the IDE and Codex can use this same environment. Its base Python is supplied with Codex, but running the application does not require launching it through Codex's chat.
-
-From a PowerShell terminal in this project, run:
-
-```powershell
-.\run.cmd
-```
-
-The launcher selects this project's `.venv\Scripts\python.exe` and project working directory explicitly, regardless of the terminal's default Python. It forwards application arguments, for example `.\run.cmd --port 7861` for a second instance while port 7860 is already occupied.
-
-- **VS Code:** open the `LLM_HW1` folder. The checked-in `.vscode` files provide the environment default and an **English Chat Moderation** launch configuration for F5 / Run Without Debugging. Install the recommended Python and Python Debugger extensions if absent. If the workspace already selected a different interpreter, use **Python: Select Interpreter** to choose `.venv\Scripts\python.exe`; VS Code does not replace a previous selection merely because the default setting changes. The launch configuration also names the project interpreter explicitly.
-- **PyCharm or another Python IDE:** select the existing interpreter `C:\Users\USER\Desktop\LLM_HW1\.venv\Scripts\python.exe`, set `app.py` as the script and `C:\Users\USER\Desktop\LLM_HW1` as the working directory. No new virtual environment is needed for this project on this computer.
-- **Codex:** use the same launcher or `.\.venv\Scripts\python.exe app.py`.
-
-VS Code configuration follows its [Python debugger documentation](https://code.visualstudio.com/docs/python/debugging) and [interpreter setting documentation](https://code.visualstudio.com/docs/python/settings-reference).
-
-### New checkout or another computer
-
-1. For a new installation, install an independent **64-bit Python 3.12** first. Verify it with `py -3.12 --version`; this command must succeed before creating the environment. The existing system Python 3.8 is not suitable. Python 3.12 is the version used for the verified local CPU demo; the full supported-version range has not been independently tested.
-2. In the project folder, create a new virtual environment and install CPU PyTorch and the remaining dependencies. These commands are for a new checkout without an existing `.venv`; use the existing working environment directly rather than recreating it over itself. On Windows PowerShell:
-
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cpu
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe -m pip check
-```
-
-This pins the CPU PyTorch version used by the local demo; Colab keeps its separate CUDA-enabled PyTorch. No activation is required below because every command names the environment's interpreter explicitly. Select that same `.venv/Scripts/python.exe` in the IDE.
-
-3. Download [moderation_run_bundle.zip from Google Drive](https://drive.google.com/file/d/1sybY7Hv8NzawH67hxUHRxOdOxfRfbzfr/view?usp=drive_link) and save it in your **Downloads** folder with that filename. Use the source and `config.json` from this repository, which match the saved experiment. In PowerShell, check the ZIP hash against the value above, then restore:
-
-```powershell
-Get-FileHash "$env:USERPROFILE\Downloads\moderation_run_bundle.zip" -Algorithm SHA256
-.\.venv\Scripts\python.exe -m moderation restore-bundle "$env:USERPROFILE\Downloads\moderation_run_bundle.zip"
-```
-
-If you save it elsewhere, replace the path in these commands. The restore command checks each archived file's checksum and the experiment configuration before the application uses the artifacts. Restoring does not train models.
-
-4. Single run command:
-
-```powershell
-.\.venv\Scripts\python.exe app.py
-```
-
-Virtual environments depend on their base Python installation and are not portable folders. Do not copy or commit `.venv`; recreate it on the target computer. The current development `.venv` uses Codex's bundled Python 3.12.14 and passes imports, `pip check` and real CPU inference. It is suitable for the shared IDE/Codex workflow above while that base installation remains available. A fresh installation on another computer is still pending. See the [Python venv documentation](https://docs.python.org/3.12/library/venv.html).
-
-Open `http://127.0.0.1:7860`. The application accepts new messages, shows labels and confidence, masks messages flagged offensive, switches between four main models and logs each response time. Confidence scores are not calibrated probabilities. Inputs longer than 4,000 characters are rejected in the UI; training preprocessing clips to that length and the Transformer truncates to 128 tokens. Each model classifies the current message without conversation history.
-
-Missing model files produce an explicit setup error; there is no fake prediction fallback. Only restore artifact bundles you produced and trust, because the sklearn pipeline uses Python serialization.
-
-For Linux/macOS, use an independently installed Python 3.12 with `python3.12 -m venv .venv`, then replace `.\.venv\Scripts\python.exe` in the installation commands above with `.venv/bin/python`. Use your actual ZIP download path for restoration:
-
-```sh
-.venv/bin/python -m moderation restore-bundle /path/to/moderation_run_bundle.zip
-.venv/bin/python app.py
-```
-
-For the optional SHA-256 check, use `sha256sum /path/to/moderation_run_bundle.zip` on Linux or `shasum -a 256 /path/to/moderation_run_bundle.zip` on macOS.
-
 ## Repository and submission
 
 Repository: [DorukArtan/Real_Time_Chat_Moderation](https://github.com/DorukArtan/Real_Time_Chat_Moderation).
@@ -171,13 +149,15 @@ See `docs/requirements.md` for R1-R8 and grading gates, `docs/architecture.md` f
 
 Cloud training, exported metrics, artifact restoration and local CPU browser verification are complete. See [the demo guide](docs/demo_guide.md) for the tested inputs, actual failure and narration draft. Click **Send message** to submit: Enter inserted a newline in the tested multiline textbox despite its placeholder.
 
-Pending deliverables: the final 8-12-slide PDF, the student's narrated <=2-minute video and accessible video link, and a fresh-environment setup check. Successful local inference does not complete these submission gates.
+The 12-slide PDF has been prepared locally. The student's narrated <=2-minute video, its accessible link and a fresh-environment setup check remain pending. Add the video link to the PDF cover before submission.
 
 ## Code checks
 
-```text
-python -m pip install -r requirements-test.txt
-python -m pytest -q
+Using the same project environment on Windows:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-test.txt
+.\.venv\Scripts\python.exe -m pytest -q
 ```
 
 These tests verify target mapping, split isolation, noise normalization, local-training restrictions, edit-distance behavior, threshold selection and the >=100-run benchmark contract. They do not train models or manufacture project measurements.
@@ -192,3 +172,39 @@ These tests verify target mapping, split isolation, noise normalization, local-t
 - [Gensim Word2Vec](https://radimrehurek.com/gensim/models/word2vec.html)
 - [Colab resource limits and persistence](https://research.google.com/colaboratory/faq.html)
 
+## Optional: retrain in Google Colab
+
+This section is for reproducing or changing the experiment. The trained bundle above is sufficient to run the application. All fitting and experiment benchmarking run in Colab; local training is blocked. Opening the application never starts training.
+
+1. Open [Google Colab](https://colab.research.google.com/) and choose **File > Upload notebook**.
+2. Upload `notebooks/01_colab_training.ipynb`. It contains a source archive, so a published GitHub repository is not needed to start.
+3. Choose **Runtime > Change runtime type > T4 GPU**, or another available GPU.
+4. Run the numbered cells in order. Authorize your own Google Drive when the mount cell requests access. For a new experiment, choose an unused `RUN_NAME`, such as `run_002`, in the run-selection cell.
+5. Models, frozen splits, training logs and measured reports are stored under `MyDrive/SWE015_Moderation/runs/<RUN_NAME>/`.
+6. Run the interactive Gradio application cell to test new messages inside Colab.
+
+The notebook uses an isolated virtual environment and reuses Colab's CUDA PyTorch when compatible. GPU training is used for the Transformer; the Word2Vec and small network stages use the Colab CPU. **All inference benchmarks explicitly use CPU**, including when the Colab runtime has a GPU.
+
+The environment is created with `venv --without-pip --system-site-packages`, then the notebook's pip uses `--python` to install into that environment. This avoids depending on `ensurepip`, which some hosted Python installations omit. Creation is repeated safely on rerun to repair a partially created environment; existing packages and Drive outputs are not deleted. Setup failures include their underlying stdout/stderr in the error message. See [pip's interpreter-management documentation](https://pip.pypa.io/en/stable/topics/python-option/).
+
+Completed model stages are skipped on rerun. An interrupted stage restarts from its beginning; this is not an optimizer-state resume system. Best epoch weights and per-epoch logs are saved to Drive, but do not reuse an incomplete stage as final evidence. If source or configuration changes, choose a new `RUN_NAME` to avoid mixing experiments.
+
+Colab GPU availability and session duration are not guaranteed. No paid resource is purchased by this project.
+
+### Experiment stages
+
+The notebook executes these same repository commands:
+
+```text
+python -m moderation doctor
+python -m moderation prepare-data
+python -m moderation train-baselines
+python -m moderation train-neural
+python -m moderation train-transformer
+python -m moderation quantize
+python -m moderation evaluate
+python -m moderation verify
+python -m moderation bundle
+```
+
+Training commands are restricted to Colab. Data preparation, status inspection and inference do not train models.
