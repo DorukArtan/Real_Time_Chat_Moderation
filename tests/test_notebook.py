@@ -32,7 +32,8 @@ def test_notebook_cells_and_embedded_source_match_repository():
     assert archive_text
     with zipfile.ZipFile(io.BytesIO(base64.b64decode(archive_text))) as archive:
         assert {
-            "app.py", "config.json", "requirements.txt", "run.cmd", ".gitattributes", ".vscode/launch.json"
+            "app.py", "config.json", "requirements.txt", "run.cmd", ".gitattributes", ".vscode/launch.json",
+            "ui/moderation.css",
         }.issubset(archive.namelist())
         for name in archive.namelist():
             assert archive.read(name) == (ROOT / name).read_bytes(), f"Embedded source is stale: {name}"

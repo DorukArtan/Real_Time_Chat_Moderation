@@ -37,6 +37,7 @@ def source_archive():
     for directory, pattern in [
         ("moderation", "*.py"),
         ("resources", "*.txt"),
+        ("ui", "*.css"),
         ("docs", "*.md"),
         ("tests", "*.py"),
         ("scripts", "*.py"),

@@ -51,6 +51,7 @@ def test_dynamic_onnx_shapes_and_real_int8_cpu_graph(tmp_path):
 @pytest.mark.integration
 def test_app_default_is_int8_and_has_four_model_choices(tmp_path, monkeypatch):
     pytest.importorskip("gradio")
+    import app as launcher
     import moderation.app as ui
 
     (tmp_path / "int8").mkdir()
@@ -63,9 +64,13 @@ def test_app_default_is_int8_and_has_four_model_choices(tmp_path, monkeypatch):
 
     monkeypatch.setattr(ui, "ARTIFACTS", tmp_path)
     monkeypatch.setattr(ui, "Predictor", InferenceFixture)
-    app = ui.build_app()
+    app = launcher.build_app()
     dropdowns = [item for item in app.config["components"] if item["type"] == "dropdown"]
     assert loaded == ["int8"]
     assert dropdowns[0]["props"]["value"] == "int8"
     assert len(dropdowns[0]["props"]["choices"]) == 4
+    examples = next(item for item in app.config["components"] if item["type"] == "dataset")
+    textbox = next(item for item in app.config["components"] if item["type"] == "textbox")
+    for field in ("lines", "elem_id", "placeholder"):
+        assert examples["props"]["component_props"][0][field] == textbox["props"][field]
     app.close()
