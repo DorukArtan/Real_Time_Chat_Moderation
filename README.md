@@ -76,7 +76,7 @@ Confidence scores are uncalibrated model scores. Each model classifies only the 
 - **Antigravity, PyCharm or another IDE:** select the existing interpreter `<project>\.venv\Scripts\python.exe`, set `app.py` as the script and the project folder as the working directory. You can also run `.\run.cmd` from the IDE's PowerShell terminal.
 - **Codex:** use the same `.\run.cmd` launcher or `.\.venv\Scripts\python.exe app.py`.
 
-The current development `.venv` uses Codex's bundled Python 3.12.14 and works from both the IDE and Codex while that base installation remains available. A new checkout can use an independently installed Python 3.12 as described above. Virtual environments depend on their base Python installation; recreate `.venv` on another computer rather than copying it. A fresh-environment setup check is still pending.
+Setup was verified on Windows from a fresh GitHub clone in an isolated Python 3.12.14 environment. After installing CPU PyTorch and the project requirements, `pip check` passed. The model bundle matched the SHA-256 above, and `.\run.cmd` started the app with INT8 selected. The app displayed a clean message, masked an offensive one, and returned predictions from all three other models.
 
 VS Code configuration follows its [debugger documentation](https://code.visualstudio.com/docs/python/debugging) and [interpreter setting documentation](https://code.visualstudio.com/docs/python/settings-reference). See also the [Python virtual environment documentation](https://docs.python.org/3.12/library/venv.html).
 
@@ -149,7 +149,7 @@ See `docs/requirements.md` for R1-R8 and grading gates, `docs/architecture.md` f
 
 Cloud training, exported metrics, artifact restoration and local CPU browser verification are complete. See [the demo guide](docs/demo_guide.md) for the tested inputs, actual failure and narration draft. Press **Enter** or click **Send message** to submit; **Shift+Enter** inserts a new line.
 
-The 12-slide PDF has been prepared locally. The student's narrated <=2-minute video, its accessible link and a fresh-environment setup check remain pending. Add the video link to the PDF cover before submission.
+The 12-slide presentation links to the repository and the narrated demo on its first slide. The video runs for 1 minute 58.5 seconds and shows live moderation, model switching, the architecture diagram and the benchmark results. The video and trained model bundle were verified to be accessible without signing in. [Watch the demo on Google Drive](https://drive.google.com/file/d/1VztToKFtg89EG3ea7TkQJVKHPfDaw8-1/view?usp=sharing).
 
 ## Code checks
 
